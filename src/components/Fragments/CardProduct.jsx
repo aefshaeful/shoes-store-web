@@ -2,7 +2,7 @@
 const CardProduct = (props) => {
     const { children } = props;
     return (
-        <div className="w-full max-w-xs bg-white border border-gray-800 w-60 rounded-lg shadow mx-2">
+        <div className="w-full max-w-xs bg-white border border-gray-800 w-45 rounded-lg shadow mx-2 flex flex-col justify-between">
             {children}
         </div>
     );
@@ -14,7 +14,7 @@ const ImageProduct = (props) => {
     return (
         <a href="#">
         <img
-          className="w-full rounded-t-lg object-cover pb-2 object-center max-w-xs"
+          className="w-full rounded-t-lg object-cover pb-2 object-center max-w-xs h-60"
           src={image}
           alt="shoes images"
         />
@@ -25,7 +25,7 @@ const ImageProduct = (props) => {
 const NameProduct = (props) => {
     const { children, name } = props;
     return (
-        <div className="px-5 pb-5">
+        <div className="px-5 pb-5 h-full">
         <a href="">
           <h5 className="text-xl font-semibold tracking-tight text-blue-600">
             {name}
