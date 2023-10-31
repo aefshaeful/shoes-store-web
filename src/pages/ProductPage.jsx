@@ -1,10 +1,11 @@
 import CardProduct from "../components/Fragments/CardProduct";
+import { useState } from "react";
 
 const products = [
   {
     id: 1,
     name: "Nike Air Max 270",
-    price: "$129.99",
+    price: 129.99,
     image: "/images/shoes-1.jpg",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate.",
@@ -12,15 +13,15 @@ const products = [
   {
     id: 2,
     name: "Nike Air Max",
-    price: "$129.99",
+    price: 115.44,
     image: "/images/shoes-2.jpg",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit eligendi qui rerum molestiae mollitia tenetur! Dolorum sapiente, quaerat reiciendis consequatur aut voluptate minus natus perspiciatis iste recusandae deleniti enim soluta.",
   },
   {
     id: 3,
-    name: "Nike Air Max 270",
-    price: "$129.99",
+    name: "Adidas Superstar",
+    price: 159.29,
     image: "/images/shoes-3.jpg",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate.",
@@ -29,13 +30,30 @@ const products = [
 
 const user = window.localStorage.getItem("email");
 
-const handleLogout = () => {
-  localStorage.removeItem("email");
-  localStorage.removeItem("password");
-  window.location.href = "/login";
-}
 
 const ProductPage = () => {
+  const [cart, setCart] = useState([
+    {
+      id: 1,
+      qty: 1
+    }
+  ])
+
+  const handleAddToCart = (id) => {
+    if(cart.find(item => item.id === id)) {
+      setCart(cart.map(item => item.id === id ? {...item, qty: item.qty + 1} : item))
+    }else{
+      setCart([...cart, {id: id, qty: 1}])
+    }
+  };
+
+  
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    window.location.href = "/login";
+  };
+
   return (
     <>
       <div className="flex justify-end items-center px-10 text-white text-sm bg-blue-500 h-20">
@@ -48,15 +66,53 @@ const ProductPage = () => {
         </button>
       </div>
       <div className="flex justify-center py-10">
+        <div className="w-4/6 flex flex-wrap">
         {products.map((product) => (
         <CardProduct key={product.id}>
           <CardProduct.Image image={product.image} />
           <CardProduct.Name name={product.name}>
             {product.description}
           </CardProduct.Name>
-          <CardProduct.Price price={product.price} />
+          <CardProduct.Price 
+            price={product.price}
+            id={product.id}
+            handleAddToCart={handleAddToCart} 
+          />
         </CardProduct>
         ))}
+        </div>
+        <div className="w-1/2">
+          <div className="text-3xl font-bold ml-5 mb-2">Shopping Cart</div>
+          <table className="text-left table-auto border-separate border-spacing-x-5">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item) => {
+                const product = products.find((product) => product.id === item.id);
+                return (
+                  <tr key={item.id}>
+                    <td>{product.name}</td>
+                    <td>{item.qty}</td>
+                    <td> 
+                      ${" "} 
+                      {product.price.toLocaleString("en-US", { styles: "currency", currency: "USD"})}
+                    </td>
+                    <td> 
+                      ${" "} 
+                      {(item.qty * product.price).toLocaleString("en-US", { styles: "currency", currency: "USD"})}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
