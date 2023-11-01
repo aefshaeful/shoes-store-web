@@ -1,5 +1,5 @@
 import CardProduct from "../components/Fragments/CardProduct";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const products = [
   {
@@ -32,12 +32,27 @@ const user = window.localStorage.getItem("email");
 
 
 const ProductPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1
+  const [cart, setCart] = useState([])
+  const [totalShooping, setTotalShooping] = useState(0)
+
+  // Component DidMount, Component Constructor yang menampung state ke dalam localStorage
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || [])
+  }, []);
+
+
+  // Component DidUpdate
+  useEffect(() => {
+    if (cart.length > 0) {
+      const total = cart.reduce((total, item) => {
+        const product = products.find(product => product.id === item.id)
+        return total + (product.price * item.qty)
+      }, 0)
+      setTotalShooping(total)
+      localStorage.setItem("cart", JSON.stringify(cart))
     }
-  ])
+  }, [cart])
+    
 
   const handleAddToCart = (id) => {
     if(cart.find(item => item.id === id)) {
@@ -110,6 +125,15 @@ const ProductPage = () => {
                   </tr>
                 )
               })}
+              <tr>
+                <td colSpan={3}><b>Total Shooping</b></td>
+                <td>
+                  <b>
+                  ${" "} 
+                  {(totalShooping).toLocaleString("en-US", { styles: "currency", currency: "USD"})}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
