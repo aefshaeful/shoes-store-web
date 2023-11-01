@@ -1,5 +1,6 @@
 import InputForm from "../Elements/Input";
 import Button from "../Elements/Button/Button";
+import { useEffect, useRef } from "react";
 
 const FormLogin = () => {
     const handleSubmit  = (event) => {
@@ -10,6 +11,13 @@ const FormLogin = () => {
         console.log(event.target.email.value); // email diambil dari name pada input form email.
         console.log("Click Me!");
     };
+
+    const emailRef = useRef(null);
+    
+    useEffect(() => {
+        emailRef.current.focus();
+    }, []);
+
     return(
         <form onSubmit={handleSubmit}>
           <InputForm 
@@ -17,6 +25,7 @@ const FormLogin = () => {
             placeholder="example@gmail.com" 
             type="email" 
             label="Email"
+            ref={emailRef}
           />
           <InputForm 
             name="password" 

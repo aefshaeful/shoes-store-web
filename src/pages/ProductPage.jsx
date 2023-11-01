@@ -1,5 +1,5 @@
 import CardProduct from "../components/Fragments/CardProduct";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const products = [
   {
@@ -52,7 +52,16 @@ const ProductPage = () => {
       localStorage.setItem("cart", JSON.stringify(cart))
     }
   }, [cart])
-    
+
+  const totalShoopingRef = useRef(null)
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalShoopingRef.current.style.display = "table-row";
+    } else {
+      totalShoopingRef.current.style.display = "none";
+    }
+  }, [cart]);
 
   const handleAddToCart = (id) => {
     if(cart.find(item => item.id === id)) {
@@ -125,7 +134,7 @@ const ProductPage = () => {
                   </tr>
                 )
               })}
-              <tr>
+              <tr ref={totalShoopingRef}>
                 <td colSpan={3}><b>Total Shooping</b></td>
                 <td>
                   <b>
