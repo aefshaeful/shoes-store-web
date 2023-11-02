@@ -1,31 +1,46 @@
 import InputForm from "../Elements/Input";
 import Button from "../Elements/Button/Button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { login } from "../../services/auth.services";
 
 const FormLogin = () => {
+    const [loginMessage, setLoginMessage] = useState("");
     const handleSubmit  = (event) => {
         event.preventDefault();
-        localStorage.setItem("email",event.target.email.value);
-        localStorage.setItem("password",event.target.password.value);
-        window.location.href = "/products";
-        console.log(event.target.email.value); // email diambil dari name pada input form email.
-        console.log("Click Me!");
+        const data = {
+            username: event.target.username.value,
+            password: event.target.password.value,
+        };
+        login(data, (status, res) => {
+          if (status) {
+            localStorage.setItem("token", res);
+            //localStorage.setItem("username", event.target.username.value);
+            window.location.href = "/products";
+          }else{
+            setLoginMessage(res.response.data);
+          }
+        });
+        // localStorage.setItem("email",event.target.email.value);
+        // localStorage.setItem("password",event.target.password.value);
+        // window.location.href = "/products";
+        // console.log(event.target.email.value); // email diambil dari name pada input form email.
+        // console.log("Click Me!");
     };
 
-    const emailRef = useRef(null);
+    const usernameRef = useRef(null);
     
     useEffect(() => {
-        emailRef.current.focus();
+      usernameRef.current.focus();
     }, []);
 
     return(
         <form onSubmit={handleSubmit}>
           <InputForm 
-            name="email" 
-            placeholder="example@gmail.com" 
-            type="email" 
-            label="Email"
-            ref={emailRef}
+            name="username" 
+            placeholder="username" 
+            type="text" 
+            label="Username"
+            ref={usernameRef}
           />
           <InputForm 
             name="password" 
@@ -34,6 +49,9 @@ const FormLogin = () => {
             label="Password" 
           />
           <Button classname=" bg-blue-500 w-full mt-6" type="submit" >Login</Button>
+          {loginMessage && (
+            <p className="text-red-500 text-xs mt-3 text-center">{loginMessage}</p>
+          )}
         </form>
     )
 }

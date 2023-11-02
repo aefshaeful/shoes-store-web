@@ -1,6 +1,7 @@
 import CardProduct from "../components/Fragments/CardProduct";
 import { useEffect, useState, useRef } from "react";
 import { getProducts } from "../services/product.service";
+import { getUserName } from "../services/auth.services";
 
 
 // const products = [
@@ -30,18 +31,28 @@ import { getProducts } from "../services/product.service";
 //   },
 // ];
 
-const user = window.localStorage.getItem("email");
+//const user = window.localStorage.getItem("username");
 
 
 const ProductPage = () => {
   const [cart, setCart] = useState([])
   const [totalShooping, setTotalShooping] = useState(0)
   const [products, setProducts] = useState([])
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     getProducts((data) => {
       setProducts(data);
     })
+  }, []);
+
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      setUsername(getUserName(token));
+    } else {
+      window.location.href = "/login";
+    }
   }, []);
 
   // Component DidMount, Component Constructor yang menampung state ke dalam localStorage
@@ -85,15 +96,15 @@ const ProductPage = () => {
 
   
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
+    //localStorage.removeItem("password");
     window.location.href = "/login";
   };
 
   return (
     <>
       <div className="flex justify-end items-center px-10 text-white text-sm bg-blue-500 h-20">
-        <p className="mr-5">Hi, {user}</p>
+        <p className="mr-5">Hi, {username}</p>
         <button
           className="px-3 py-2 bg-red-500 text-white text-xs font-bold uppercase rounded-lg"
           onClick={handleLogout}
