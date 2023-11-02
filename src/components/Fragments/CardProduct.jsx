@@ -2,7 +2,7 @@
 const CardProduct = (props) => {
     const { children } = props;
     return (
-        <div className="w-full max-w-xs bg-white border border-gray-800 w-60 h-41 rounded-lg shadow mx-4 my-2 flex flex-col justify-between">
+        <div className="w-full max-w-xs bg-white border border-gray-800 w-45 h-41 rounded-lg shadow mx-2 my-2 flex flex-col justify-between">
             {children}
         </div>
     );
@@ -14,7 +14,7 @@ const ImageProduct = (props) => {
     return (
         <a href="#">
         <img
-          className="w-full rounded-t-lg object-cover pb-2 object-center max-w-xs h-40"
+          className="rounded-t-lg object-cover pb-2 object-center max-w-xs h-60 px-6 py-6 mx-auto block"
           src={image}
           alt="shoes images"
         />
@@ -28,10 +28,10 @@ const NameProduct = (props) => {
         <div className="px-5 pb-5 h-full">
         <a href="">
           <h5 className="text-xl font-semibold tracking-tight text-blue-600">
-            {name}
+            {name.substring(0, 20)}...
           </h5>
           <p className="text-sm text-black">
-            {children}
+            {children.substring(0, 100)}...
           </p>
         </a>
       </div>
