@@ -1,7 +1,7 @@
 import CardProduct from "../components/Fragments/CardProduct";
 import { useEffect, useState, useRef } from "react";
 import { getProducts } from "../services/product.service";
-import { getUserName } from "../services/auth.services";
+import useLogin from "../hooks/useLogin";
 
 
 // const products = [
@@ -38,7 +38,7 @@ const ProductPage = () => {
   const [cart, setCart] = useState([])
   const [totalShooping, setTotalShooping] = useState(0)
   const [products, setProducts] = useState([])
-  const [username, setUsername] = useState("");
+  const username = useLogin();
 
   useEffect(() => {
     getProducts((data) => {
@@ -46,14 +46,6 @@ const ProductPage = () => {
     })
   }, []);
 
-  useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      setUsername(getUserName(token));
-    } else {
-      window.location.href = "/login";
-    }
-  }, []);
 
   // Component DidMount, Component Constructor yang menampung state ke dalam localStorage
   useEffect(() => {
