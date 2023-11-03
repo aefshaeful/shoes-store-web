@@ -41,8 +41,8 @@ const ProductPage = () => {
   const username = useLogin();
 
   useEffect(() => {
-    getProducts((data) => {
-      setProducts(data);
+    getProducts((result) => {
+      setProducts(result);
     })
   }, []);
 
@@ -109,7 +109,7 @@ const ProductPage = () => {
           {products.length > 0 &&
             products.map((product) => (
               <CardProduct key={product.id}>
-                <CardProduct.Image image={product.image} />
+                <CardProduct.Image image={product.image} id={product.id} />
                 <CardProduct.Name name={product.title}>
                   {product.description}
                 </CardProduct.Name>

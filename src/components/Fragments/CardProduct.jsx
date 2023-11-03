@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
+
 const CardProduct = (props) => {
     const { children } = props;
     return (
@@ -10,15 +12,15 @@ const CardProduct = (props) => {
 
 
 const ImageProduct = (props) => {
-    const { image } = props;
+    const { image, id } = props;
     return (
-        <a href="#">
+        <Link to={`/product/${id}`}>
         <img
           className="rounded-t-lg object-cover pb-2 object-center max-w-xs h-60 px-6 py-6 mx-auto block"
           src={image}
           alt="shoes images"
         />
-      </a>
+      </Link>
     )
 }
 
