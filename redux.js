@@ -1,8 +1,7 @@
-// Reducer
-// action.type = nama action
-
 import { legacy_createStore } from "redux";
 
+// Reducer
+// action.type = nama action
 // action.payload = data yang dikirim
 const cardReducer = (
     state = {
