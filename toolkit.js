@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import toolkit from "@reduxjs/toolkit";
 
 const { configureStore, createAction, createReducer } = toolkit;

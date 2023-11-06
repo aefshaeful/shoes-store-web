@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import { addToCart } from "../../redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 const CardProduct = (props) => {
     const { children } = props;
@@ -41,7 +43,8 @@ const NameProduct = (props) => {
 }
 
 const PriceProduct = (props) => {
-    const { price, handleAddToCart, id } = props;
+    const { price, id } = props;
+    const dispatch = useDispatch();
     return (
         <div className="flex items-center justify-between px-5 pb-5">
             <h3 className="text-xl font-bold text-gray-800">
@@ -50,7 +53,7 @@ const PriceProduct = (props) => {
             </h3>
             <button 
               className="px-3 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded"
-              onClick={() => handleAddToCart(id)} 
+              onClick={() => dispatch(addToCart({id, qty: 1}))} 
             >
                 Add to Cart
             </button>
