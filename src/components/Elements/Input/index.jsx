@@ -6,6 +6,7 @@ import { forwardRef } from "react";
 
 const InputForm = forwardRef((props, ref) => {
     const { label, name, type, placeholder } = props;
+   
     return(
         <div className="mt-4">
             <Label htmlFor={name}>{label}</Label>

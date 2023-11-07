@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useLogin from "../../hooks/useLogin";
 import { useSelector } from "react-redux";
+import { DarkMode } from "../../context/DarkMode";
 
 
 export default function Navbar() {
     const username = useLogin();
     const [totalCart, setTotalCart] = useState(0);
     const cart = useSelector((state) => state.cart.data);
-
+    const { isDarkMode, setIsDarkMode } = useContext(DarkMode);
+    
     useEffect(() => {
         const sum = cart.reduce((acc, item) => { 
             return acc + item.qty;
@@ -20,18 +22,25 @@ export default function Navbar() {
         window.location.href = "/login";
     };
 
+    const handleDarkMode = () => {
+        setIsDarkMode(!isDarkMode);
+    };
+
     return (
-        <div className="flex justify-end items-center px-10 text-white text-sm bg-blue-500 h-20">
-            <p className="mr-5">Hi, {username}</p>
+        <div className="flex justify-end items-center px-10 text-sm bg-blue-500 h-20">
+            <p className="mr-5 font-bold">Hi, {username}</p>
             <button
-                className="px-3 py-2 bg-red-500 text-white text-xs font-bold uppercase rounded-lg"
+                className="px-3 py-2 bg-gray-300 text-gray-800 text-xs font-bold uppercase rounded-full"
                 onClick={handleLogout}
             >
             Logout
             </button>
-            <div className="flex justify-item bg-red-500 px-3 py-2 text-xs text-white ml-3 rounded-lg">
+            <div className="flex justify-item bg-gray-300 text-gray-800 px-3 py-2 text-xs font-bold ml-3 rounded-full">
                 {totalCart}
             </div>
+            <button onClick={handleDarkMode} className="flex justify-item ml-3 px-4 py-1 rounded-full bg-gray-300 text-gray-800">
+                {isDarkMode ? "☀" : "🌙"}
+            </button>
         </div>
     )
 }
