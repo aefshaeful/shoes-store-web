@@ -1,27 +1,38 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { DarkMode } from "../../context/DarkMode";
+import { useTotalPriceDispatch } from "../../hooks/useTotalPriceDispatch";
+import { useTotalPrice } from "../../hooks/useTotalPrice";
+
 
 
 function TableCart (props) {
     const {products} = props;
     const cart = useSelector((state) => state.cart.data);
-    const [ totalShooping, setTotalShooping ] = useState(0);
+    // const [ totalShooping, setTotalShooping ] = useState(0);
     const { isDarkMode } = useContext(DarkMode);
+    const dispatch = useTotalPriceDispatch();
+    const { total } = useTotalPrice();
 
 
     // Component DidUpdate
     useEffect(() => {
         if (products.length > 0 && cart.length > 0) {
-            const total = cart.reduce((acc, cartItem) => {
-                const product = products.find(product => product.id === cartItem.id)
-                return acc + (product.price * cartItem.qty)
+            const sum = cart.reduce((acc, cartItem) => {
+                const product = products.find(product => product.id === cartItem.id);
+                return acc + product.price * cartItem.qty;
             }, 0)
-            setTotalShooping(total)
+            // setTotalShooping(total)
+            dispatch({
+              type: "UPDATE_TOTAL_PRICE", 
+              payload: {
+                total: sum,
+              }
+            })
             localStorage.setItem("cart", JSON.stringify(cart))
         }
-    }, [cart, products]);
+    }, [cart, products, dispatch]);
 
 
     // useRef
@@ -77,7 +88,7 @@ function TableCart (props) {
               <td>
                 <b>
                   ${" "}
-                  {totalShooping.toLocaleString("en-US", {
+                  {total.toLocaleString("en-US", {
                     styles: "currency",
                     currency: "USD",
                   })}
