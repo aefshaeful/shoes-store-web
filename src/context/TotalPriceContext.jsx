@@ -7,6 +7,7 @@ const TotalPriceContext = createContext();
 // context untuk menyimpan action
 const TotalPriceContextDispatch = createContext();
 
+// reducer untuk mengubah state global
 const totalPriceReducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_TOTAL_PRICE": {
@@ -22,6 +23,7 @@ const totalPriceReducer = (state, action) => {
 
 export function TotalPriceContextProvider({ children }) {
   const [totalPrice, dispatch] = useReducer(totalPriceReducer, { total: 0 });
+  
   return (
     <TotalPriceContext.Provider value={totalPrice}>
       <TotalPriceContextDispatch.Provider value={dispatch}>

@@ -65,11 +65,13 @@ function TableCart (props) {
                     <td>{product.title.substring(0, 20)}...</td>
                     <td>{item.qty}</td>
                     <td>
-                      ${" "}
-                      {product.price.toLocaleString("en-US", {
-                        styles: "currency",
-                        currency: "USD",
-                      })}
+                     <span className={`${product.price > 100 ? "bg-blue-500 rounded-lg" : "bg-yellow-300 rounded-lg"}`}>
+                        ${" "}
+                        {product.price.toLocaleString("en-US", {
+                          styles: "currency",
+                          currency: "USD",
+                        })}
+                     </span>
                     </td>
                     <td>
                       ${" "}
